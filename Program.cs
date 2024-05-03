@@ -1,5 +1,5 @@
 ﻿using System;
-
+using System.Collections.Generic;
 class Program
 {
     static void Main(string[] args)
@@ -9,7 +9,7 @@ class Program
         System.Console.WriteLine("Here, you can easily maintain and track your list of need to do chores!");
         System.Console.WriteLine("Before starting your list you must first register with us.");
         System.Console.WriteLine("Please start by entering your first and last name.");
-        Console.ReadLine();
+        Console.ReadLine();                                                                                                                  
         System.Console.WriteLine("Welcome ");
         
          
