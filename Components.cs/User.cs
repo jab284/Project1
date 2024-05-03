@@ -1,17 +1,21 @@
 using System.Collections.Concurrent;
 using System.Runtime.CompilerServices;
+using System.Runtime.InteropServices;
 
 class User
 {
-    public string Name { get; set}
+    public string Name { get; set;}
     private string UserName { get; set;}  
     private string Password { get; set;}
+    public List<string> taskList { get; set;}
+    public bool addAnother = true;
 
 
 
 
-    //Method
-    public static void EnterCredentials()
+
+    //Method - should be on programs page
+    /*public static void EnterCredentials()
     {
     System.Console.WriteLine("Welcome back");
     System.Console.WriteLine("Please enter your User Name.");
@@ -19,7 +23,7 @@ class User
     System.Console.WriteLine("Please enter your password");
     Console.ReadLine();
     }
-
+    */
 
 
 
@@ -57,6 +61,21 @@ class User
         
         return str;
         
+    }
+
+   
+    public void AddTask()
+    {
+        do
+        {
+            System.Console.WriteLine("What task would you like add?"); 
+            Console.ReadLine();
+            System.Console.WriteLine("Would you like to add another task?  Please select Y or N.");
+            Console.ReadLine();
+        }  
+        while (addAnother == true) ; 
+        
+
     }
 }
 
