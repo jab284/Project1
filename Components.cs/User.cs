@@ -51,6 +51,7 @@ class User
         Password = password;
     }
 
+   
     //ToString
     public override string ToString()
     {
@@ -74,9 +75,11 @@ class User
             Console.ReadLine();
         }  
         while (addAnother == true) ; 
-        
-
     }
+
+
+
+
 }
 
 
