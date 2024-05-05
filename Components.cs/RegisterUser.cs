@@ -11,7 +11,7 @@ class RegisterUser
    
 
 
-
+    //Constructor
     private RegisterUser()
     {
         
@@ -19,9 +19,7 @@ class RegisterUser
 
     public RegisterUser(string fullName)
     {
-          
-        
-        string fullName= fullName;
+        //string fullName= fullName;    take out?
     }
 
     private RegisterUser(string fullName, string userName, string password, int clientID)
@@ -31,8 +29,5 @@ class RegisterUser
         this.password = password;
         this.clientID = clientID;
     }
-
-
-
 
 }

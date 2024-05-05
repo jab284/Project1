@@ -7,7 +7,8 @@ Project Description - Create a chore To-Do List.
                     - Requires user to Log In
                     - Allow User to View List
                     - Allow User to Add To List
-                    - Allow User to Mark Items Complete
+                    - Allow User to Exit
+                    
 
 
 

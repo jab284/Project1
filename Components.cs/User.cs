@@ -30,7 +30,7 @@ class User
 
 
     //Constructors
-    private User()
+    private User()   //should this be public or private
     {
 
     }
@@ -61,10 +61,9 @@ class User
         str += "It is time to start creating your list.";
         
         return str;
-        
     }
 
-   
+    //Add Task Method
     public void AddTask()
     {
         do

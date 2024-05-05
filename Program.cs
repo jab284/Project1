@@ -6,16 +6,17 @@ class Program
     //static void Main(string[] args)
 
     static List<string> taskList = new List<string>();
+
     //METHODS
-    static string GetAndValidateUserInput(string inputName, int minLenght, int maxLength)
+    static string GetAndValidateUserInput(string inputName, int minLength, int maxLength)
     {
         //While Loop
         while (true)
         {
-            //format strings
-            System.Console.WriteLine($"Please create a new {inputName}.  It must be between {minLength} and {maxLength} alpha characters long.");
-            string input = Console.ReadLine();
-            try
+            //format strings for registering name            
+            System.Console.WriteLine($"Please enter your {inputName}.  It must be between {minLength} and {maxLength} alpha characters long.");
+            string input = Console.ReadLine();  //reads input from user
+            try     //Exceptions -- wrong length
             {
                 if (input.Length > maxLength || input.Length < minLength)
                 {
@@ -25,29 +26,27 @@ class Program
                 for (int i = 0; i < input.Length; i++)
 
                 {
-                    if (!char.IsLetter(input[i]))
+                    if (!char.IsLetter(input[i]))      //invalid character exception
                     {
-                        throw new FormatException("Input must only be alpha characters.")
+                        throw new FormatException("Input must only be alpha characters.");
                     }
                 }
-
                 // return to break out of while loop
-                return input;
+                return input;      //??
             }
             catch (IndexOutOfRangeException e)
             {
-                System.Console.WriteLine(e);
+                System.Console.WriteLine(e);    //can i combine the e??
                 System.Console.WriteLine($"Your {inputName} must be between {minLength} and {maxLength} alpha characters long.");
                 System.Console.WriteLine("Please try again");
             }
             catch (FormatException e)
             {
-                System.Console.WriteLine(e);
+                System.Console.WriteLine(e);    //can i combine the e??
                 System.Console.WriteLine($"Your {inputName} must only be alpha characters");
                 System.Console.WriteLine("Please try again");
             }
         }
-
     }
 
         //Method to register a user
@@ -56,9 +55,10 @@ class Program
         //create a new user object for next user
         User user = new User(fullName, userName, password);
         //return user object
-        return user;
+        return user;   //??
     }
 
+        //Method to Display main menu and make selection
     static int DisplayMainMenuAndGetSelection()
     {
         while (true)
@@ -69,25 +69,26 @@ class Program
             System.Console.WriteLine("[3] Exit");
             System.Console.WriteLine("Please select an option:");
 
-            string input = Console.ReadLine();
+            string input = Console.ReadLine();  //returns users input for selection
             try
             {
-                int selection = int.Parse(input);
+                int selection = int.Parse(input); //turn user input into int
                 if (selection <1 || selection > 3)
                 {
-                    throw new IndexOutOfRangeException("Selection must be between 1 and 3.")
+                    throw new IndexOutOfRangeException("Selection must be between 1 and 3.");
                 }
                 return selection;
             }
             catch (Exception e)
             {
-                System.Console.WriteLine(e);
+                System.Console.WriteLine(e);  //can i combine e
                 System.Console.WriteLine("Selection is invalid");
                 System.Console.WriteLine("Please try again.");
             }
         }
     }
 
+        //Method Display Add Task
     static void DisplayAddTaskMenu()
     {
         System.Console.WriteLine("Please enter your task description.");
@@ -96,10 +97,9 @@ class Program
         taskList.Add(taskDescription);
 
         System.Console.WriteLine($"Task '{taskDescription}' added to your list.");
-        return taskDescription;
-
+        //return taskDescription;   not needed?
     }
-
+        //Method Display All Tasks
     static void DisplayAllTasks()
     {
          //I dont know how to do this);
@@ -113,21 +113,30 @@ class Program
         System.Console.WriteLine("'CREATE YOUR TO DO LIST'");
         System.Console.WriteLine("Here, you can easily maintain and track your list of need to do chores!");
         System.Console.WriteLine("Before starting your list you must first register with us.");
-        System.Console.WriteLine("Please start by entering your first and last name.");
+        //System.Console.WriteLine("Please start by entering your first name.");
+        //Console.ReadLine();  //added  how to store?
+
+        
+        
+        //Methods to login .............need reg methods
 
        //Method to get Full Name
-        string fullName = GetAndValidateUserInput('Full Name', 5, 20);
+        string fullName = GetAndValidateUserInput("Full Name", 4, 20);  // this is not working right
         System.Console.WriteLine(($"Welcome {fullName} "));
         //Method to get User Name
-        string userName = GetAndValidateUserInput('Username', 7, 10);
+        string userName = GetAndValidateUserInput("Username", 7, 10);
         //Method to get Password
-        string password = GetAndValidateUserInput('Password', 5, 10);
+        string password = GetAndValidateUserInput("Password", 5, 10);   //not working as expected
 
         //Method to create RegisterUser with full name, user name, and password
         User user = RegisterUser(fullName, userName, password);
-        //other stuff?
+        //other stuff?  what to do here for registration?
 
 
+
+
+        //Display Main menu
+        DisplayMainMenuAndGetSelection();
 
         List<string> taskList = new List<string>();
 
@@ -137,7 +146,7 @@ class Program
 
         while (!exitRequested)
         {
-            DisplayMainMenuAndGetSelection();
+            int selection = DisplayMainMenuAndGetSelection();
             
             switch (selection)
             {

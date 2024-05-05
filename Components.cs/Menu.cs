@@ -1,10 +1,12 @@
 class Menu
 {
-    
+
+  /*  
 while (true)
 {
     
 }
+*/
 
 
 
@@ -14,8 +16,7 @@ while (true)
 
 
 
-
-    
+    /*
 //Constructors
     public Menu()
     {
@@ -37,7 +38,7 @@ while (true)
         UserName = userName;
         Password = password;
     }
-
+    */
 }
 
 
