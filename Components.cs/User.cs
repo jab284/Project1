@@ -7,51 +7,23 @@ class User
     public string Name { get; set;}
     private string UserName { get; set;}  
     private string Password { get; set;}
-    public List<string> taskList { get; set;}
-    public bool addAnother = true;
+    public List<string> TaskList { get; set;}
+    
 
 
 
 
 
-    //Method - should be on programs page
-    /*public static void EnterCredentials()
-    {
-    System.Console.WriteLine("Welcome back");
-    System.Console.WriteLine("Please enter your User Name.");
-    Console.ReadLine();
-    System.Console.WriteLine("Please enter your password");
-    Console.ReadLine();
-    }
-    */
-
-
-
-
-
-    //Constructors
-    private User()   //should this be public or private
-    {
-
-    }
-    public User(string fullName)
-    {
-        Name = fullName;
-    }
-
-    private User(string userName, string password)
-    {
-        UserName = userName;
-        Password = password;
-    }
+    
+   //Constructors
     public User(string fullName, string userName, string password)
     {
         Name = fullName;
         UserName = userName;
         Password = password;
+        TaskList = new List<string>();
     }
 
-   
     //ToString
     public override string ToString()
     {
@@ -66,19 +38,13 @@ class User
     //Add Task Method
     public void AddTask()
     {
-        do
-        {
-            System.Console.WriteLine("What task would you like add?"); 
-            Console.ReadLine();
-            System.Console.WriteLine("Would you like to add another task?  Please select Y or N.");
-            Console.ReadLine();
-        }  
-        while (addAnother == true) ; 
+        System.Console.WriteLine("What task would you like add?"); 
+        string input = Console.ReadLine();
+        System.Console.WriteLine();
+        TaskList.Add(input);
+        System.Console.WriteLine($"Task '{input}' was added to your list.");
+        System.Console.WriteLine();
     }
-
-
-
-
 }
 
 

@@ -5,7 +5,7 @@ class Program
 {
     //static void Main(string[] args)
 
-    static List<string> taskList = new List<string>();
+    //static List<string> taskList = new List<string>();
 
     //METHODS
     static string GetAndValidateUserInput(string inputName, int minLength, int maxLength)
@@ -16,7 +16,7 @@ class Program
             //format strings for registering name            
             System.Console.WriteLine($"Please enter your {inputName}.  It must be between {minLength} and {maxLength} alpha characters long.");
             string input = Console.ReadLine();  //reads input from user
-            try     //Exceptions -- wrong length
+            try     //Exceptions --  for wrong length
             {
                 if (input.Length > maxLength || input.Length < minLength)
                 {
@@ -32,19 +32,19 @@ class Program
                     }
                 }
                 // return to break out of while loop
-                return input;      //??
+                return input;      //users input
             }
             catch (IndexOutOfRangeException e)
             {
-                System.Console.WriteLine(e);    //can i combine the e??
+                
                 System.Console.WriteLine($"Your {inputName} must be between {minLength} and {maxLength} alpha characters long.");
-                System.Console.WriteLine("Please try again");
+                System.Console.WriteLine("Please try again.");
             }
             catch (FormatException e)
             {
-                System.Console.WriteLine(e);    //can i combine the e??
+                
                 System.Console.WriteLine($"Your {inputName} must only be alpha characters");
-                System.Console.WriteLine("Please try again");
+                System.Console.WriteLine("Please try again.");
             }
         }
     }
@@ -55,7 +55,7 @@ class Program
         //create a new user object for next user
         User user = new User(fullName, userName, password);
         //return user object
-        return user;   //??
+        return user;   //return new user
     }
 
         //Method to Display main menu and make selection
@@ -63,13 +63,19 @@ class Program
     {
         while (true)
         {
-            System.Console.WriteLine("Main Menu");
+            
+            
+            System.Console.WriteLine("Main Menu:");
+            System.Console.WriteLine("What would you like to do next?");
+            System.Console.WriteLine();
             System.Console.WriteLine("[1] Add a new task");
             System.Console.WriteLine("[2] View all tasks");
             System.Console.WriteLine("[3] Exit");
+            System.Console.WriteLine();
             System.Console.WriteLine("Please select an option:");
 
             string input = Console.ReadLine();  //returns users input for selection
+            System.Console.WriteLine();
             try
             {
                 int selection = int.Parse(input); //turn user input into int
@@ -81,28 +87,30 @@ class Program
             }
             catch (Exception e)
             {
-                System.Console.WriteLine(e);  //can i combine e
-                System.Console.WriteLine("Selection is invalid");
-                System.Console.WriteLine("Please try again.");
+                System.Console.WriteLine("Sorry!  Your selection is invalid.");
+                System.Console.WriteLine("Selection must be between 1 and 3.  Please try again.");
+                System.Console.WriteLine();
             }
         }
     }
 
         //Method Display Add Task
-    static void DisplayAddTaskMenu()
+    static void DisplayAddTaskMenu(User activeUser)
     {
-        System.Console.WriteLine("Please enter your task description.");
-        string taskDescription = Console.ReadLine();
-
-        taskList.Add(taskDescription);
-
-        System.Console.WriteLine($"Task '{taskDescription}' added to your list.");
-        //return taskDescription;   not needed?
+        activeUser.AddTask();
     }
         //Method Display All Tasks
-    static void DisplayAllTasks()
+    static void DisplayAllTasks(User activeUser)
     {
-         //I dont know how to do this);
+        System.Console.WriteLine("YOUR LIST OF TASKS:");
+        System.Console.WriteLine();
+        List<string> Tasks = activeUser.TaskList;
+        foreach (string Task in Tasks)
+        {
+            System.Console.WriteLine(Task);
+        }
+        System.Console.WriteLine();
+        System.Console.WriteLine();
     }
 
 
@@ -111,37 +119,39 @@ class Program
     static void Main(string[] args)
     {
         System.Console.WriteLine("'CREATE YOUR TO DO LIST'");
+        System.Console.WriteLine();
         System.Console.WriteLine("Here, you can easily maintain and track your list of need to do chores!");
+        System.Console.WriteLine();
         System.Console.WriteLine("Before starting your list you must first register with us.");
+        //System.Console.WriteLine();
         //System.Console.WriteLine("Please start by entering your first name.");
         //Console.ReadLine();  //added  how to store?
 
         
         
-        //Methods to login .............need reg methods
+        //Methods to register ....
 
        //Method to get Full Name
-        string fullName = GetAndValidateUserInput("Full Name", 4, 20);  // this is not working right
+        string fullName = GetAndValidateUserInput("Full Name", 4, 20);  // this is not working right for full name due to space
+        System.Console.WriteLine();
         System.Console.WriteLine(($"Welcome {fullName} "));
+        System.Console.WriteLine();
         //Method to get User Name
         string userName = GetAndValidateUserInput("Username", 7, 10);
+        System.Console.WriteLine();
         //Method to get Password
-        string password = GetAndValidateUserInput("Password", 5, 10);   //not working as expected
-
-        //Method to create RegisterUser with full name, user name, and password
+        string password = GetAndValidateUserInput("Password", 5, 10);   //not working as expected - cant do numbers right now
+        System.Console.WriteLine();
+        //Method to create RegisterUser with full name, user name, and password - pulls from above
         User user = RegisterUser(fullName, userName, password);
-        //other stuff?  what to do here for registration?
+        //other stuff
+
+        //Need to add Login Stuff
 
 
-
-
+        
         //Display Main menu
-        DisplayMainMenuAndGetSelection();
-
-        List<string> taskList = new List<string>();
-
-        DisplayAddTaskMenu();
-
+       
         bool exitRequested = false;
 
         while (!exitRequested)
@@ -151,10 +161,10 @@ class Program
             switch (selection)
             {
                 case 1:
-                    DisplayAddTaskMenu();
+                    DisplayAddTaskMenu(user);
                     break;
                 case 2:
-                    DisplayAllTasks();
+                    DisplayAllTasks(user);
                     break;
                 case 3:
                     System.Console.WriteLine("See you later!");
@@ -174,53 +184,3 @@ class Program
 
 
 
-/*
-        System.Console.WriteLine("'CREATE YOUR TO DO LIST'");
-        System.Console.WriteLine("Here, you can easily maintain and track your list of need to do chores!");
-        System.Console.WriteLine("Before starting your list you must first register with us.");
-        System.Console.WriteLine("Please start by entering your first and last name.");
-        Console.ReadLine();                                                                                                                  
-        System.Console.WriteLine("Welcome ");
-        
-         
-        System.Console.WriteLine("Please create a new User Name.  It must be between 7 and 10 alpha characters long.");
-        string userNameInput = Console.ReadLine() ?? "0";
-        try
-        {
-            //dont know what to put here
-
-        }
-        catch (IndexOutOfRangeException e)
-        {
-            System.Console.WriteLine(e);
-            System.Console.WriteLine("Your user name must be between 7 and 10 alpha characters long.");
-            System.Console.WriteLine("Please try again.");
-        }
-        catch (FormatException e)
-        {
-            System.Console.WriteLine(e);
-            System.Console.WriteLine("Your user name must only be alpha characters.");
-            System.Console.WriteLine("Please try again.");
-        }
-        System.Console.WriteLine("Thank you.  Now enter a password you would like to use to secure your account.");
-        System.Console.WriteLine("The Password must be between 5 and 10 alpha numeric characters long");
-        Console.ReadLine();
-
-        try
-        {
-            //dont know what to put here
-
-        }
-        catch (IndexOutOfRangeException e)
-        {
-            System.Console.WriteLine(e);
-            System.Console.WriteLine("Your password must be between 5 and 10 alpha characters long.");
-            System.Console.WriteLine("Please try again.");
-        }
-        catch (FormatException e)
-        {
-            System.Console.WriteLine(e);
-            System.Console.WriteLine("Your password can only be alpha numeric characters.");
-            System.Console.WriteLine("Please try again.");
-        }
-        */
