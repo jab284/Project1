@@ -39,7 +39,7 @@ class User
     public void AddTask()
     {
         System.Console.WriteLine("What task would you like add?"); 
-        string input = Console.ReadLine();
+        string input  = Console.ReadLine();
         System.Console.WriteLine();
         TaskList.Add(input);
         System.Console.WriteLine($"Task '{input}' was added to your list.");
