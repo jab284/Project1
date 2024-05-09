@@ -4,6 +4,8 @@ using System.Runtime.InteropServices;
 
 class User
 {
+    //Properties
+    private int Id;
     public string Name { get; set;}
     private string UserName { get; set;}  
     private string Password { get; set;}
@@ -18,6 +20,7 @@ class User
    //Constructors
     public User(string fullName, string userName, string password)
     {
+        
         Name = fullName;
         UserName = userName;
         Password = password;
@@ -27,6 +30,7 @@ class User
     //ToString
     public override string ToString()
     {
+        
         string str = "";
         str += "Thank You " + Name;
         str += ".";

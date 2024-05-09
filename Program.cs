@@ -115,24 +115,27 @@ class Program
 
 
 
-    //This is the MAIN
+    //This is the MAIN --------------------------------------------
     static void Main(string[] args)
+
+            //This is UI Development for 
     {
-        System.Console.WriteLine("'CREATE YOUR TO DO LIST'");
+        System.Console.WriteLine("*************************");
+        System.Console.WriteLine(" CREATE YOUR TO DO LIST ");
+        System.Console.WriteLine("*************************");
         System.Console.WriteLine();
         System.Console.WriteLine("Here, you can easily maintain and track your list of need to do chores!");
         System.Console.WriteLine();
-        System.Console.WriteLine("Before starting your list you must first register with us.");
-        //System.Console.WriteLine();
-        //System.Console.WriteLine("Please start by entering your first name.");
-        //Console.ReadLine();  //added  how to store?
+       
+       
 
         
         
         //Methods to register ....
 
        //Method to get Full Name
-        string fullName = GetAndValidateUserInput("Full Name", 4, 20);  // this is not working right for full name due to space
+        System.Console.WriteLine("Before starting your list you must first register with us.");
+        string fullName = GetAndValidateUserInput("Full Name", 4, 20);  // this is not working right for full name due to space - need to figure out
         System.Console.WriteLine();
         System.Console.WriteLine(($"Welcome {fullName} "));
         System.Console.WriteLine();
@@ -140,7 +143,7 @@ class Program
         string userName = GetAndValidateUserInput("Username", 7, 10);
         System.Console.WriteLine();
         //Method to get Password
-        string password = GetAndValidateUserInput("Password", 5, 10);   //not working as expected - cant do numbers right now
+        string password = GetAndValidateUserInput("Password", 5, 10);   //not working as expected - cant do numbers right now - need to fix?
         System.Console.WriteLine();
         //Method to create RegisterUser with full name, user name, and password - pulls from above
         User user = RegisterUser(fullName, userName, password);
