@@ -120,6 +120,14 @@ class Program
 
             //This is UI Development for 
     {
+        
+        
+        
+        
+        
+        
+        //This is UI Development for Task Menu
+        
         System.Console.WriteLine("*************************");
         System.Console.WriteLine(" CREATE YOUR TO DO LIST ");
         System.Console.WriteLine("*************************");
@@ -150,6 +158,15 @@ class Program
         //other stuff
 
         //Need to add Login Stuff
+
+        System.Console.WriteLine("Thank you for registering with us.");
+        System.Console.WriteLine("Please Login to continue.");
+        System.Console.WriteLine("Enter your User Name.");
+        string userName = Console.ReadLine();  //returns user name from user input
+        System.Console.WriteLine("Please enter your password");   
+        string password = Console.ReadLine();  //returns password from user input
+        System.Console.WriteLine("Welcome back " + fullName + " .");
+
 
 
         
