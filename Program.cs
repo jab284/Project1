@@ -181,6 +181,11 @@ class Program
             
         }
 
+        TaskListStorage = new TaskListStorage();
+
+        UserRepo userRepo = new UserRepo(appStorage);
+        TaskRepo taskRepo = new TaskRepo(appStorage);
+
     }    
         
 }
