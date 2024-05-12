@@ -1,12 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Security.Cryptography;
-class Program
+﻿class Program
 {
-    //static void Main(string[] args)//
-
-    //static List<string> taskList = new List<string>();
-
     //METHODS
     static string GetAndValidateUserInput(string inputName, int minLength, int maxLength)
     {
@@ -48,17 +41,8 @@ class Program
             }
         }
     }
-
-        //Method to register a user
-    static User RegisterUser(string fullName, string userName, string password)
-    {
-        //create a new user object for next user
-        User user = new User(fullName, userName, password);
-        //return user object
-        return user;   //return new user
-    }
-
-        //Method to Display main menu and make selection
+    
+    //Method to Display main menu and make selection
     static int DisplayMainMenuAndGetSelection()
     {
         while (true)
@@ -68,8 +52,8 @@ class Program
             System.Console.WriteLine("Main Menu:");
             System.Console.WriteLine("What would you like to do next?");
             System.Console.WriteLine();
-            System.Console.WriteLine("[1] Add a new task");
-            System.Console.WriteLine("[2] View all tasks");
+            System.Console.WriteLine("[1] Add a new todo");
+            System.Console.WriteLine("[2] View all todos");
             System.Console.WriteLine("[3] Exit");
             System.Console.WriteLine();
             System.Console.WriteLine("Please select an option:");
@@ -94,54 +78,37 @@ class Program
         }
     }
 
-        //Method Display Add Task
-    static void DisplayAddTaskMenu(User activeUser)
+    //Method Display Add Todo Menu
+    static void DisplayAddTodoMenu(TodoService todoService, User activeUser)
     {
-        activeUser.AddTask();
-    }
-        //Method Display All Tasks
-    static void DisplayAllTasks(User activeUser)
-    {
-        System.Console.WriteLine("YOUR LIST OF TASKS:");
+        System.Console.WriteLine("What todo would you like add?"); 
+        string input = Console.ReadLine();
         System.Console.WriteLine();
-        List<string> Tasks = activeUser.TaskList;
-        foreach (string Task in Tasks)
+
+        Todo todo = todoService.AddTodo(input, activeUser);
+        
+        System.Console.WriteLine($"Todo '{input}' was added to your list.");
+        System.Console.WriteLine();
+    }
+    
+    //Method Display All Todos
+    static void DisplayAllTodosMenu(TodoService todoService, User activeUser)
+    {
+        System.Console.WriteLine("YOUR LIST OF TODOS:");
+        System.Console.WriteLine();
+        List<Todo> todos = todoService.GetAllTodos(activeUser);
+        foreach (Todo todo in todos)
         {
-            System.Console.WriteLine(Task);
+            System.Console.WriteLine(todo);
         }
         System.Console.WriteLine();
         System.Console.WriteLine();
     }
 
-
-
-    //This is the MAIN --------------------------------------------
-    static void Main(string[] args)
-
-            //This is UI Development for 
+    // TODO: Take spaces or just support first name?
+    static User DisplayRegisterUserMenu(UserService userService)
     {
-        
-        
-        
-        
-        
-        
-        //This is UI Development for Task Menu
-        
-        System.Console.WriteLine("*************************");
-        System.Console.WriteLine(" CREATE YOUR TO DO LIST ");
-        System.Console.WriteLine("*************************");
-        System.Console.WriteLine();
-        System.Console.WriteLine("Here, you can easily maintain and track your list of need to do chores!");
-        System.Console.WriteLine();
-       
-       
-
-        
-        
-        //Methods to register ....
-
-       //Method to get Full Name
+        //Method to get Full Name
         System.Console.WriteLine("Before starting your list you must first register with us.");
         string fullName = GetAndValidateUserInput("Full Name", 4, 20);  // this is not working right for full name due to space - need to figure out
         System.Console.WriteLine();
@@ -154,24 +121,80 @@ class Program
         string password = GetAndValidateUserInput("Password", 5, 10);   //not working as expected - cant do numbers right now - need to fix?
         System.Console.WriteLine();
         //Method to create RegisterUser with full name, user name, and password - pulls from above
-        User user = RegisterUser(fullName, userName, password);
-        //other stuff
+        User user = userService.RegisterUser(fullName, userName, password);
+        return user;
+    }
+    
+    static User DisplayLoginMenu(UserService userService)
+    {
+        // Login - Menu name - UserName - Password - Success - return
+        System.Console.WriteLine("Welome to 'CREATE YOUR OWN TO DO LIST'.");
+        System.Console.WriteLine("Login Menu:");
+        System.Console.WriteLine("Please enter your user name.");
+        string userName = GetAndValidateUserInput("Username", 7, 10);
+        System.Console.WriteLine();
+        System.Console.WriteLine("Please enter your password.");
+        string password = GetAndValidateUserInput("Password", 5, 10);
+        System.Console.WriteLine();
+        User user = userService.Login(userName, password);
+        System.Console.WriteLine();
+        return user;
+    }
 
-        //Need to add Login Stuff
-
-        System.Console.WriteLine("Thank you for registering with us.");
-        System.Console.WriteLine("Please Login to continue.");
-        System.Console.WriteLine("Enter your User Name.");
-        string userName = Console.ReadLine();  //returns user name from user input
-        System.Console.WriteLine("Please enter your password");   
-        string password = Console.ReadLine();  //returns password from user input
-        System.Console.WriteLine("Welcome back " + fullName + " .");
 
 
+    //This is the MAIN --------------------------------------------
+    static void Main(string[] args)
+
+    {
+        TodoListStorage appStorage = new TodoListStorage();
+        UserRepo userRepo = new UserRepo(appStorage);
+        TodoRepo todoRepo = new TodoRepo(appStorage);
+        UserService userService = new UserService(userRepo);
+        TodoService todoService = new TodoService(todoRepo);
+        
+        
+        System.Console.WriteLine("*************************");
+        System.Console.WriteLine(" CREATE YOUR TO DO LIST ");
+        System.Console.WriteLine("*************************");
+        System.Console.WriteLine();
+        System.Console.WriteLine("Here, you can easily maintain and track your list of need to do chores!");
+        System.Console.WriteLine();
+       
+        //Register User --> going to move inside the menu below
+        User user = DisplayRegisterUserMenu(userService);
+        
+        
+           
+
+        //Display Login Menu ******
+
+         bool exitRequested = false;
+
+        while (!exitRequested)
+        {
+        int selection = DisplayEntryMainMenu();
+            
+            switch (selection)
+            {
+                case 1:
+                    DisplayRegisterUserMenu(userService, user);
+                    break;
+                case 2:
+                    DisplayLoginMenu(userService, user);
+                    break;
+                case 3:
+                    System.Console.WriteLine("See you later!");
+                    exitRequested = true;
+                    break;
+                default:
+                    System.Console.WriteLine("Invalid selection.  Please select, 1, 2, or 3.");
+                    break;
+            }
+        }
 
         
-        //Display Main menu
-       
+        //Display ToDo Task Main menu
         bool exitRequested = false;
 
         while (!exitRequested)
@@ -181,10 +204,10 @@ class Program
             switch (selection)
             {
                 case 1:
-                    DisplayAddTaskMenu(user);
+                    DisplayAddTodoMenu(todoService, user);
                     break;
                 case 2:
-                    DisplayAllTasks(user);
+                    DisplayAllTodosMenu(todoService, user);
                     break;
                 case 3:
                     System.Console.WriteLine("See you later!");
@@ -198,14 +221,8 @@ class Program
             
         }
 
-        TaskListStorage = new TaskListStorage();
-
-        UserRepo userRepo = new UserRepo(appStorage);
-        TaskRepo taskRepo = new TaskRepo(appStorage);
+        
 
     }    
         
 }
-
-
-

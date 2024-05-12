@@ -1,37 +1,35 @@
 class UserRepo
 {
-    private TaskListStorage taskListStorage;
+    private TodoListStorage _todoListStorage;
 
-    public UserRepo(TaskListStorage taskListStorage)
+    public UserRepo(TodoListStorage todoListStorage)
     {
-        this.taskListStorage = taskListStorage;
+        this._todoListStorage = todoListStorage;
     }
-
-
-
-
-
-
 
     //Add User
     public User AddUser(User user)
     {
+        user.Id = _todoListStorage.userIdCounter;
+        _todoListStorage.userIdCounter++;
+        
         //Add to user table
-        taskListStorage.UserTable.Add(user.Id, user);
-        taskListStorage.userIdCounter++;
+        _todoListStorage.UserTable.Add(user.Id, user);
+        
+        return user;
     }
 
     //Get user by Username
     public User GetUserByUsername(string username)
     {
         //Get user from user table by username
-        foreach (User user in taskListStorage.UserTable.Values)
+        foreach (User user in _todoListStorage.UserTable.Values)
         {
-            if (user.Username == username)
+            if (user.UserName == username)
             {
                 return user;
             }
         }
-        throw new Exception("User not found");
+        throw new ArgumentException("User not found");
     }
 }

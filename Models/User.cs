@@ -1,30 +1,17 @@
-using System.Collections.Concurrent;
-using System.Runtime.CompilerServices;
-using System.Runtime.InteropServices;
-
 class User
 {
     //Properties
-    private int Id;
+    public int Id { get; set;}
     public string Name { get; set;}
-    private string UserName { get; set;}  
-    private string Password { get; set;}
-    public List<string> TaskList { get; set;}
-    
-
-
-
-
-
+    public string UserName { get; set;}  
+    public string Password { get; private set;}
     
    //Constructors
     public User(string fullName, string userName, string password)
     {
-        
         Name = fullName;
         UserName = userName;
         Password = password;
-        TaskList = new List<string>();
     }
 
     //ToString
@@ -38,17 +25,4 @@ class User
         
         return str;
     }
-
-    //Add Task Method
-    public void AddTask()
-    {
-        System.Console.WriteLine("What task would you like add?"); 
-        string input  = Console.ReadLine();
-        System.Console.WriteLine();
-        TaskList.Add(input);
-        System.Console.WriteLine($"Task '{input}' was added to your list.");
-        System.Console.WriteLine();
-    }
 }
-
-
