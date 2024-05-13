@@ -1,27 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Bootcamp\\ToDoProject\\Project1\\Project1.csproj": {}
+    "C:\\Revature\\Project1\\Project1.csproj": {}
   },
   "projects": {
-    "C:\\Bootcamp\\ToDoProject\\Project1\\Project1.csproj": {
+    "C:\\Revature\\Project1\\Project1.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Bootcamp\\ToDoProject\\Project1\\Project1.csproj",
+        "projectUniqueName": "C:\\Revature\\Project1\\Project1.csproj",
         "projectName": "Project1",
-        "projectPath": "C:\\Bootcamp\\ToDoProject\\Project1\\Project1.csproj",
-        "packagesPath": "C:\\Users\\JAB_2\\.nuget\\packages\\",
-        "outputPath": "C:\\Bootcamp\\ToDoProject\\Project1\\obj\\",
+        "projectPath": "C:\\Revature\\Project1\\Project1.csproj",
+        "packagesPath": "C:\\dev\\nuget\\packages",
+        "outputPath": "C:\\Revature\\Project1\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\JAB_2\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\U1C073\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {

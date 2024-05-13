@@ -152,7 +152,9 @@
     {
         while (true)
         {
-            System.Console.WriteLine("Welcome, please login or register:");
+            System.Console.WriteLine("MAIN MENU");
+            System.Console.WriteLine();
+            System.Console.WriteLine("Please Register or Login:");
             System.Console.WriteLine();
             System.Console.WriteLine("[1] Register");
             System.Console.WriteLine("[2] Login");
@@ -194,15 +196,20 @@
         UserService userService = new UserService(userRepo);
         TodoService todoService = new TodoService(todoRepo);
 
-
-        System.Console.WriteLine("*************************");
-        System.Console.WriteLine(" CREATE YOUR TO DO LIST ");
-        System.Console.WriteLine("*************************");
+        System.Console.WriteLine();
+        System.Console.WriteLine("       Welcome to: ");
+        System.Console.WriteLine();
+        System.Console.WriteLine("**************************");
+        System.Console.WriteLine("* CREATE YOUR TO DO LIST * ");
+        System.Console.WriteLine("**************************");
         System.Console.WriteLine();
         System.Console.WriteLine("Here, you can easily maintain and track your list of need to do chores!");
         System.Console.WriteLine();
+        System.Console.WriteLine("--------------------------");
+        System.Console.WriteLine();
 
-        User user = null;      
+        User? user = null;  
+
         //Display Entry Menu ******
         bool exitRequested = false;
         bool loggedIn = false;
