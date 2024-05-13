@@ -7,9 +7,9 @@ class UserService
         this.userRepo = userRepo;
     }
 
-    public User RegisterUser(string fullName, string userName, string password)
+    public User RegisterUser(string firstName, string userName, string password)
     {
-        User user = new User(fullName, userName, password);
+        User user = new User(firstName, userName, password);
         user = userRepo.AddUser(user);
         return user;
     }

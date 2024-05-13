@@ -7,9 +7,9 @@ class User
     public string Password { get; private set;}
     
    //Constructors
-    public User(string fullName, string userName, string password)
+    public User(string firstName, string userName, string password)
     {
-        Name = fullName;
+        Name = firstName;
         UserName = userName;
         Password = password;
     }
