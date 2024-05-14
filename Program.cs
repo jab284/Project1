@@ -8,6 +8,7 @@
         {
             //format strings for registering name            
             System.Console.WriteLine(
+                //"Please enter your " + inputName + ".");  //this changed
             $"Please enter your {inputName}. It must be between {minLength} and {maxLength} alpha characters long."); //take out??
             string? input = Console.ReadLine(); //reads input from user
             try //Exceptions --  for wrong length
@@ -83,7 +84,7 @@
     //Method Display Add Todo Menu
     static void DisplayAddTodoMenu(TodoService todoService, User activeUser)
     {
-        System.Console.WriteLine("What todo would you like add?");
+        System.Console.WriteLine("What task would you like add?");
         string? input = Console.ReadLine();
         System.Console.WriteLine();
 
@@ -93,7 +94,7 @@
         System.Console.WriteLine();
     }
 
-    //Method Display All Todos
+    //Method Display All Todo's
     static void DisplayAllTodosMenu(TodoService todoService, User activeUser)
     {
         System.Console.WriteLine("YOUR LIST OF TODO TASKS:");
@@ -113,6 +114,7 @@
     {
         //System.Console.WriteLine("----------"); //maybe wrong spot
         System.Console.WriteLine("REGISTER:");
+        System.Console.WriteLine();
         //Method to get First Name
         System.Console.WriteLine("Before creating your list you must first register with us.");
         System.Console.WriteLine("After registering with us, you will need to Login.");
@@ -241,7 +243,8 @@
                     }
                     catch(Exception e)
                     {
-                        Console.WriteLine("Could not login. Username or password is incorrect.");
+                        Console.WriteLine("Unable to Login.  Either username or password is incorrect.");
+                        System.Console.WriteLine("Please try again!");
                     }
                     break;
                 case 3:
