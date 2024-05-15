@@ -8,7 +8,7 @@ class Todo
     public Todo(string description, int userId)
     {
         this.UserId = userId;
-        this.Description = description;
+        this.Description = description.ToUpper();  //is this right
     }
 
     public override string ToString()

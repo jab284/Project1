@@ -1,26 +1,132 @@
 ﻿class Program
 {
-    //METHODS
-    static string GetAndValidateUserInput(string inputName, int minLength, int maxLength)
+    //This is the MAIN --------------------------------------------
+    static void Main(string[] args)
     {
+        // App setup
+        TodoListStorage appStorage = new TodoListStorage();
+        UserRepo userRepo = new UserRepo(appStorage);
+        TodoRepo todoRepo = new TodoRepo(appStorage);
+        UserService userService = new UserService(userRepo);
+        TodoService todoService = new TodoService(todoRepo);
+
+        System.Console.WriteLine();
+        System.Console.WriteLine("       Welcome to: ");
+        System.Console.WriteLine();
+        System.Console.WriteLine("**************************");
+        System.Console.WriteLine("* CREATE YOUR TO DO LIST * ");
+        System.Console.WriteLine("**************************");
+        System.Console.WriteLine();
+        System.Console.WriteLine("Here, you can easily maintain and track your list of need to do chores!");
+        System.Console.WriteLine();
+        System.Console.WriteLine("--------------------------");
+        //System.Console.WriteLine();
+
+        User? user = null;  
+
+        //Display Entry Menu ******
+        bool exitRequested = false;
+        bool loggedIn = false;
+        while (!(exitRequested || loggedIn))
+        {
+            
+            int selection = DisplayEntryMainMenu();
+            switch (selection)
+            {
+                case 1:
+                    DisplayRegisterUserMenu(userService);
+                    break;
+                case 2:
+                    try
+                    {
+                        user = DisplayLoginMenu(userService);
+                        loggedIn = true;
+                    }
+                    catch(Exception)
+                    {
+                        Console.WriteLine("Unable to Login.  Either username or password is incorrect.");
+                        System.Console.WriteLine("Please try again!");
+                    }
+                    break;
+                case 3:
+                    System.Console.WriteLine("Have a great day.  See you later!");
+                    System.Console.WriteLine();
+                    exitRequested = true;
+                    break;
+                default:
+                    System.Console.WriteLine("Invalid selection.  Please select, 1, 2, or 3.");
+                    break;
+            }
+            Console.WriteLine();
+            Console.WriteLine("--------------------------------");
+        }
+
+        if (exitRequested)
+        {
+            return;
+        }
+        
+        //Display ToDo Task Main menu
+        exitRequested = false;
+        while (!exitRequested)
+        {
+            int selection = DisplayMainMenuAndGetSelection();
+
+            switch (selection)
+            {
+                case 1:
+                    DisplayAddTodoMenu(todoService, user);
+                    break;
+                case 2:
+                    DisplayAllTodosMenu(todoService, user);
+                    break;
+                case 3:
+                    System.Console.WriteLine("Have a great day.  See you later!");
+                    exitRequested = true;
+                    System.Console.WriteLine(); 
+                    break;
+                default:
+                    System.Console.WriteLine("Invalid selection.  Please select, 1, 2, or 3.");
+                    break;
+            }
+            Console.WriteLine("--------------------------------");
+        }
+    }
+    
+    //METHODS
+    static string GetAndValidateUserInput(string inputName, int? minLength, int? maxLength)
+    {
+        // goal: modify this function to support both validating lengths and not
+        bool validateLength = minLength.HasValue && maxLength.HasValue;
+        
         //While Loop
         while (true)
         {
-            //format strings for registering name            
-            System.Console.WriteLine(
-                //"Please enter your " + inputName + ".");  //this changed
-            $"Please enter your {inputName}. It must be between {minLength} and {maxLength} alpha characters long."); //take out??
+            //format strings for registering inputName
+            if (validateLength)
+            {
+                System.Console.WriteLine(
+                    $"Please enter your {inputName}. It must be between {minLength} and {maxLength} alpha characters long:");
+            }
+            else
+            {
+                System.Console.WriteLine(
+                    $"Please enter your {inputName}:");  //this changed
+            }
+            
             string? input = Console.ReadLine(); //reads input from user
             try //Exceptions --  for wrong length
             {
-                if (input.Length > maxLength || input.Length < minLength)
+                if (validateLength)
                 {
-                    throw new IndexOutOfRangeException(
-                        $"Input must be between {minLength} and {maxLength} alpha characters long.");
+                    if (input.Length > maxLength || input.Length < minLength)
+                    {
+                        throw new IndexOutOfRangeException(
+                            $"Input must be between {minLength} and {maxLength} alpha characters long.");
+                    }
                 }
 
                 for (int i = 0; i < input.Length; i++)
-
                 {
                     if (!char.IsLetter(input[i])) //invalid character exception
                     {
@@ -43,6 +149,49 @@
                 System.Console.WriteLine("Please try again.");
             }
         }
+    }
+    
+        
+    // Method to Display Entry Main Menu
+    static int DisplayEntryMainMenu()
+    {
+        while (true)
+        {
+            System.Console.WriteLine();
+            System.Console.WriteLine("MAIN MENU");
+            System.Console.WriteLine();
+            System.Console.WriteLine("Please Register or Login:");
+            System.Console.WriteLine();
+            System.Console.WriteLine("[1] Register");
+            System.Console.WriteLine("[2] Login");
+            System.Console.WriteLine("[3] Exit");
+            System.Console.WriteLine();
+            System.Console.WriteLine("Please select an option:");
+
+            string? input = Console.ReadLine(); //returns users input for selection
+            System.Console.WriteLine(); ///do i want to add line
+            System.Console.WriteLine("------------------------");
+            System.Console.WriteLine();
+            try
+            {
+                int selection = int.Parse(input); //turn user input into int
+                if (selection < 1 || selection > 3)
+                {
+                    throw new IndexOutOfRangeException("Selection must be between 1 and 3.");
+                }
+
+                return selection;
+            }
+            catch (Exception)
+            {
+                System.Console.WriteLine("Sorry!  Your selection is invalid.");
+                System.Console.WriteLine("Selection must be between 1 and 3.  Please try again.");
+                System.Console.WriteLine();
+            }
+            System.Console.WriteLine("-----------------------------------------------------");
+            System.Console.WriteLine();
+        }
+       
     }
 
     //Method to Display main menu and make selection
@@ -119,9 +268,7 @@
         System.Console.WriteLine("Before creating your list you must first register with us.");
         System.Console.WriteLine("After registering with us, you will need to Login.");
         System.Console.WriteLine();
-        string
-            firstName = GetAndValidateUserInput("First Name", 4,
-                20); // this is not working right for first name due to space - need to figure out
+        string firstName = GetAndValidateUserInput("First Name", null, null); //changed to null, null
         System.Console.WriteLine();
         System.Console.WriteLine(($"Welcome {firstName}!"));
         System.Console.WriteLine();
@@ -145,149 +292,13 @@
         System.Console.WriteLine();
         System.Console.WriteLine("LOGIN MENU:");
         System.Console.WriteLine();
-        string userName = GetAndValidateUserInput("Username", 7, 10);
+        string userName = GetAndValidateUserInput("Username", null, null);
         System.Console.WriteLine();
-        string password = GetAndValidateUserInput("Password", 5, 10);
+        string password = GetAndValidateUserInput("Password", null, null);
         System.Console.WriteLine();
         User user = userService.Login(userName, password);
         //System.Console.WriteLine();
         return user;
     }
-    
-    // Method to Display Entry Main Menu
-    static int DisplayEntryMainMenu()
-    {
-        while (true)
-        {
-            System.Console.WriteLine();
-            System.Console.WriteLine("MAIN MENU");
-            System.Console.WriteLine();
-            System.Console.WriteLine("Please Register or Login:");
-            System.Console.WriteLine();
-            System.Console.WriteLine("[1] Register");
-            System.Console.WriteLine("[2] Login");
-            System.Console.WriteLine("[3] Exit");
-            System.Console.WriteLine();
-            System.Console.WriteLine("Please select an option:");
 
-            string? input = Console.ReadLine(); //returns users input for selection
-            System.Console.WriteLine(); ///do i want to add line
-            System.Console.WriteLine("------------------------");
-            System.Console.WriteLine();
-            try
-            {
-                int selection = int.Parse(input); //turn user input into int
-                if (selection < 1 || selection > 3)
-                {
-                    throw new IndexOutOfRangeException("Selection must be between 1 and 3.");
-                }
-
-                return selection;
-            }
-            catch (Exception)
-            {
-                System.Console.WriteLine("Sorry!  Your selection is invalid.");
-                System.Console.WriteLine("Selection must be between 1 and 3.  Please try again.");
-                System.Console.WriteLine();
-            }
-            System.Console.WriteLine("-----------------------------------------------------");
-            System.Console.WriteLine();
-        }
-       
-    }
-    
-    
-
-    //This is the MAIN --------------------------------------------
-    static void Main(string[] args)
-
-    {
-        // App setup
-        TodoListStorage appStorage = new TodoListStorage();
-        UserRepo userRepo = new UserRepo(appStorage);
-        TodoRepo todoRepo = new TodoRepo(appStorage);
-        UserService userService = new UserService(userRepo);
-        TodoService todoService = new TodoService(todoRepo);
-
-        System.Console.WriteLine();
-        System.Console.WriteLine("       Welcome to: ");
-        System.Console.WriteLine();
-        System.Console.WriteLine("**************************");
-        System.Console.WriteLine("* CREATE YOUR TO DO LIST * ");
-        System.Console.WriteLine("**************************");
-        System.Console.WriteLine();
-        System.Console.WriteLine("Here, you can easily maintain and track your list of need to do chores!");
-        System.Console.WriteLine();
-        System.Console.WriteLine("--------------------------");
-        //System.Console.WriteLine();
-
-        User? user = null;  
-
-        //Display Entry Menu ******
-        bool exitRequested = false;
-        bool loggedIn = false;
-        while (!(exitRequested || loggedIn))
-        {
-            
-            int selection = DisplayEntryMainMenu();
-            switch (selection)
-            {
-                case 1:
-                    DisplayRegisterUserMenu(userService);
-                    break;
-                case 2:
-                    try
-                    {
-                        user = DisplayLoginMenu(userService);
-                        loggedIn = true;
-                    }
-                    catch(Exception e)
-                    {
-                        Console.WriteLine("Unable to Login.  Either username or password is incorrect.");
-                        System.Console.WriteLine("Please try again!");
-                    }
-                    break;
-                case 3:
-                    System.Console.WriteLine("Have a great day.  See you later!");
-                    System.Console.WriteLine();
-                    exitRequested = true;
-                    break;
-                default:
-                    System.Console.WriteLine("Invalid selection.  Please select, 1, 2, or 3.");
-                    break;
-            }
-            Console.WriteLine("--------------------------------");
-        }
-
-        if (exitRequested)
-        {
-            return;
-        }
-        
-        //Display ToDo Task Main menu
-        exitRequested = false;
-        while (!exitRequested)
-        {
-            int selection = DisplayMainMenuAndGetSelection();
-
-            switch (selection)
-            {
-                case 1:
-                    DisplayAddTodoMenu(todoService, user);
-                    break;
-                case 2:
-                    DisplayAllTodosMenu(todoService, user);
-                    break;
-                case 3:
-                    System.Console.WriteLine("Have a great day.  See you later!");
-                    exitRequested = true;
-                    System.Console.WriteLine(); 
-                    break;
-                default:
-                    System.Console.WriteLine("Invalid selection.  Please select, 1, 2, or 3.");
-                    break;
-            }
-            Console.WriteLine("--------------------------------");
-        }
-    }
 }
