@@ -106,7 +106,8 @@
             if (validateLength)
             {
                 System.Console.WriteLine(
-                    $"Please enter your {inputName}. It must be between {minLength} and {maxLength} alpha characters long:");
+                    $"Please enter your {inputName}. It must be between {minLength} and {maxLength} alpha characters long.");
+                    
             }
             else
             {
@@ -139,14 +140,18 @@
             }
             catch (IndexOutOfRangeException)
             {
+                System.Console.WriteLine();
                 System.Console.WriteLine(
                     $"Your {inputName} must be between {minLength} and {maxLength} alpha characters long.");
                 System.Console.WriteLine("Please try again.");
+                System.Console.WriteLine();
             }
             catch (FormatException)
             {
-                System.Console.WriteLine($"Your {inputName} must only be alpha characters");
+                System.Console.WriteLine();
+                System.Console.WriteLine($"Your {inputName} must only be alpha characters.");
                 System.Console.WriteLine("Please try again.");
+                System.Console.WriteLine();
             }
         }
     }
@@ -266,11 +271,11 @@
         System.Console.WriteLine();
         //Method to get First Name
         System.Console.WriteLine("Before creating your list you must first register with us.");
-        System.Console.WriteLine("After registering with us, you will need to Login.");
+        System.Console.WriteLine("AFTER registering with us, you will also need to Login.");
         System.Console.WriteLine();
         string firstName = GetAndValidateUserInput("First Name", null, null); //changed to null, null
         System.Console.WriteLine();
-        System.Console.WriteLine(($"Welcome {firstName}!"));
+        System.Console.WriteLine($"Welcome {firstName.ToUpper()}!");
         System.Console.WriteLine();
         //Method to get User Name
         string userName = GetAndValidateUserInput("Username", 7, 10);
