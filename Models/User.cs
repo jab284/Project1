@@ -17,7 +17,6 @@ class User
     //ToString
     public override string ToString()
     {
-        
         string str = "";
         str += "Thank You " + Name;
         str += ".";

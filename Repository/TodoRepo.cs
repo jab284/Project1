@@ -20,8 +20,7 @@ class TodoRepo
     //Get All todos by userid
     public List<Todo> GetAllTodosByUserId(int userId)
     {
-        //Get user from user table by user id
-        //Get tasks from user
+        //Get user from user table by user id ->Get tasks table by user
         List<Todo> todos = new();
         foreach (Todo todo in _todoListStorage.TodoTable.Values)
         {

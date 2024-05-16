@@ -7,6 +7,7 @@ class UserService
         this.userRepo = userRepo;
     }
 
+    //Register the user
     public User RegisterUser(string firstName, string userName, string password)
     {
         User user = new User(firstName, userName, password);
@@ -14,6 +15,7 @@ class UserService
         return user;
     }
     
+    //Login the user
     public User Login(string userName, string inputPassword)
     {
         User user = userRepo.GetUserByUsername(userName);

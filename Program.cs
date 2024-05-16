@@ -3,13 +3,14 @@
     //This is the MAIN --------------------------------------------
     static void Main(string[] args)
     {
-        // App setup
+        // Application setup
         TodoListStorage appStorage = new TodoListStorage();
         UserRepo userRepo = new UserRepo(appStorage);
         TodoRepo todoRepo = new TodoRepo(appStorage);
         UserService userService = new UserService(userRepo);
         TodoService todoService = new TodoService(todoRepo);
 
+        //Console
         System.Console.WriteLine();
         System.Console.WriteLine("       Welcome to: ");
         System.Console.WriteLine();
@@ -29,7 +30,6 @@
         bool loggedIn = false;
         while (!(exitRequested || loggedIn))
         {
-            
             int selection = DisplayEntryMainMenu();
             switch (selection)
             {
@@ -96,7 +96,7 @@
     //METHODS
     static string GetAndValidateUserInput(string inputName, int? minLength, int? maxLength)
     {
-        // goal: modify this function to support both validating lengths and not
+        
         bool validateLength = minLength.HasValue && maxLength.HasValue;
         
         //While Loop
@@ -116,11 +116,11 @@
             }
             
             string? input = Console.ReadLine(); //reads input from user
-            try //Exceptions --  for wrong length
+            try 
             {
                 if (validateLength)
                 {
-                    if (input.Length > maxLength || input.Length < minLength)
+                    if (input.Length > maxLength || input.Length < minLength)     //Exceptions --  for wrong length
                     {
                         throw new IndexOutOfRangeException(
                             $"Input must be between {minLength} and {maxLength} alpha characters long.");
@@ -174,7 +174,7 @@
             System.Console.WriteLine("Please select an option:");
 
             string? input = Console.ReadLine(); //returns users input for selection
-            System.Console.WriteLine(); ///do i want to add line
+            System.Console.WriteLine(); 
             System.Console.WriteLine("------------------------");
             System.Console.WriteLine();
             try
@@ -209,7 +209,7 @@
             System.Console.WriteLine("What would you like to do next?");
             System.Console.WriteLine();
             System.Console.WriteLine("[1] Add a new ToDo task");
-            System.Console.WriteLine("[2] View all ToDo tasks");  //changed spelling - added apostrophe
+            System.Console.WriteLine("[2] View all ToDo tasks");  
             System.Console.WriteLine("[3] Exit");
             System.Console.WriteLine();
             System.Console.WriteLine("Please select an option:");
@@ -266,14 +266,13 @@
     // Method to Display Register User Menu
     static User DisplayRegisterUserMenu(UserService userService)
     {
-        //System.Console.WriteLine("----------"); //maybe wrong spot
         System.Console.WriteLine("REGISTER:");
         System.Console.WriteLine();
         //Method to get First Name
         System.Console.WriteLine("Before creating your list you must first register with us.");
         System.Console.WriteLine("AFTER registering with us, you will also need to Login.");
         System.Console.WriteLine();
-        string firstName = GetAndValidateUserInput("First Name", null, null); //changed to null, null
+        string firstName = GetAndValidateUserInput("First Name", null, null); 
         System.Console.WriteLine();
         System.Console.WriteLine($"Welcome {firstName.ToUpper()}!");
         System.Console.WriteLine();
@@ -282,7 +281,7 @@
         System.Console.WriteLine();
         //Method to get Password
         string
-            password = GetAndValidateUserInput("Password", 5, 10); //not working as expected - cant do numbers right now - need to fix?
+            password = GetAndValidateUserInput("Password", 5, 10); 
         System.Console.WriteLine();
         //Method to create RegisterUser with first name, user name, and password - pulls from above
         User user = userService.RegisterUser(firstName, userName, password);
@@ -292,7 +291,6 @@
     // Method to Display Login Menu
     static User DisplayLoginMenu(UserService userService)
     {
-        // Login - Menu name - UserName - Password - Success - return
         System.Console.WriteLine("Welcome Back! ");
         System.Console.WriteLine();
         System.Console.WriteLine("LOGIN MENU:");
