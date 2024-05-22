@@ -1,3 +1,6 @@
+using Microsoft.EntityFrameworkCore;
+
+[Index(nameof(UserName), IsUnique = true)]
 class User
 {
     //Properties
@@ -5,11 +8,12 @@ class User
     public string Name { get; set;}
     public string UserName { get; set;}  
     public string Password { get; private set;}
+    public List<Todo> Todos { get; set; } = new List<Todo>();
     
    //Constructors
-    public User(string firstName, string userName, string password)
+    public User(string name, string userName, string password)
     {
-        Name = firstName;
+        Name = name;
         UserName = userName;
         Password = password;
     }

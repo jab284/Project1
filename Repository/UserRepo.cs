@@ -1,20 +1,19 @@
+using Project1.Util;
+
 class UserRepo
 {
-    private TodoListStorage _todoListStorage;
+    private TodoListContext _todoListContext;
 
-    public UserRepo(TodoListStorage todoListStorage)
+    public UserRepo(TodoListContext todoListContext)
     {
-        this._todoListStorage = todoListStorage;
+        this._todoListContext = todoListContext;
     }
 
     //Add User
     public User AddUser(User user)
     {
-        user.Id = _todoListStorage.userIdCounter;
-        _todoListStorage.userIdCounter++;
-        
-        //Add to user table
-        _todoListStorage.UserTable.Add(user.Id, user);
+        _todoListContext.Users.Add(user);
+        _todoListContext.SaveChanges();
         
         return user;
     }
@@ -22,14 +21,9 @@ class UserRepo
     //Get user by Username
     public User GetUserByUsername(string username)
     {
-        //Get user from user table by username
-        foreach (User user in _todoListStorage.UserTable.Values)
-        {
-            if (user.UserName == username)
-            {
-                return user;
-            }
-        }
-        throw new ArgumentException("User not found");
+        return _todoListContext
+            .Users
+            .Where(user => user.UserName == username)
+            .Single();
     }
 }

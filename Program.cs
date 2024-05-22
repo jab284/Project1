@@ -1,14 +1,19 @@
-﻿class Program
+﻿using Project1.Util;
+
+class Program
 {
     //This is the MAIN --------------------------------------------
     static void Main(string[] args)
     {
         // Application setup
-        TodoListStorage appStorage = new TodoListStorage();
-        UserRepo userRepo = new UserRepo(appStorage);
-        TodoRepo todoRepo = new TodoRepo(appStorage);
+        using TodoListContext appContext = new TodoListContext();
+        
+        UserRepo userRepo = new UserRepo(appContext);
+        TodoRepo todoRepo = new TodoRepo(appContext);
         UserService userService = new UserService(userRepo);
         TodoService todoService = new TodoService(todoRepo);
+        UserController userController = new UserController(userService);
+        TodoController todoController = new TodoController(todoService);
 
         //Console
         System.Console.WriteLine();
@@ -25,75 +30,85 @@
 
         User? user = null;  
 
-        //Display Entry Menu ******
         bool exitRequested = false;
-        bool loggedIn = false;
-        while (!(exitRequested || loggedIn))
-        {
-            int selection = DisplayEntryMainMenu();
-            switch (selection)
-            {
-                case 1:
-                    DisplayRegisterUserMenu(userService);
-                    break;
-                case 2:
-                    try
-                    {
-                        user = DisplayLoginMenu(userService);
-                        loggedIn = true;
-                    }
-                    catch(Exception)
-                    {
-                        Console.WriteLine("Unable to Login.  Either username or password is incorrect.");
-                        System.Console.WriteLine("Please try again!");
-                    }
-                    break;
-                case 3:
-                    System.Console.WriteLine("Have a great day.  See you later!");
-                    System.Console.WriteLine();
-                    exitRequested = true;
-                    break;
-                default:
-                    System.Console.WriteLine("Invalid selection.  Please select, 1, 2, or 3.");
-                    break;
-            }
-            Console.WriteLine();
-            Console.WriteLine("--------------------------------");
-        }
+        while (!exitRequested) {
+            bool loggedIn = false;
+            bool logoutRequested = false;
 
-        if (exitRequested)
-        {
-            return;
-        }
-        
-        //Display ToDo Task Main menu
-        exitRequested = false;
-        while (!exitRequested)
-        {
-            int selection = DisplayMainMenuAndGetSelection();
-
-            switch (selection)
+            // Display Entry Menu
+            while (!(exitRequested || loggedIn))
             {
-                case 1:
-                    DisplayAddTodoMenu(todoService, user);
-                    break;
-                case 2:
-                    DisplayAllTodosMenu(todoService, user);
-                    break;
-                case 3:
-                    System.Console.WriteLine("Have a great day.  See you later!");
-                    exitRequested = true;
-                    System.Console.WriteLine(); 
-                    break;
-                default:
-                    System.Console.WriteLine("Invalid selection.  Please select, 1, 2, or 3.");
-                    break;
+                int selection = DisplayEntryMainMenu();
+                switch (selection)
+                {
+                    case 1:
+                        try
+                        {
+                            DisplayRegisterUserMenu(userController);
+                        } 
+                        catch (Exception)
+                        {
+                            Console.WriteLine("Unable to Register.  Username already exists.");
+                            Console.WriteLine("Please try again!");
+                        }
+
+                        break;
+                    case 2:
+                        try
+                        {
+                            user = DisplayLoginMenu(userController);
+                            loggedIn = true;
+                        }
+                        catch(Exception)
+                        {
+                            Console.WriteLine("Unable to Login.  Either username or password is incorrect.");
+                            System.Console.WriteLine("Please try again!");
+                        }
+                        break;
+                    case 3:
+                        System.Console.WriteLine("Have a great day.  See you later!");
+                        System.Console.WriteLine();
+                        exitRequested = true;
+                        logoutRequested = true;
+                        break;
+                    default:
+                        System.Console.WriteLine("Invalid selection.  Please select, 1, 2, or 3.");
+                        break;
+                }
+                Console.WriteLine();
+                Console.WriteLine("--------------------------------");
             }
-            Console.WriteLine("--------------------------------");
+
+            //Display ToDo Task Main menu
+            while (!logoutRequested)
+            {
+                int selection = DisplayMainMenuAndGetSelection();
+
+                switch (selection)
+                {
+                    case 1:
+                        DisplayAddTodoMenu(todoController, user!);
+                        break;
+                    case 2:
+                        DisplayAllTodosMenu(todoController, user!);
+                        break;
+                    case 3:
+                        System.Console.WriteLine("Have a great day.  See you later!");
+                        logoutRequested = true;
+                        loggedIn = false;
+                        user = null;
+                        System.Console.WriteLine(); 
+                        break;
+                    default:
+                        System.Console.WriteLine("Invalid selection.  Please select, 1, 2, or 3.");
+                        break;
+                }
+                Console.WriteLine("--------------------------------");
+            }
         }
     }
     
-    //METHODS
+    // Visualization UI Layer
     static string GetAndValidateUserInput(string inputName, int? minLength, int? maxLength)
     {
         
@@ -115,12 +130,12 @@
                     $"Please enter your {inputName}:");  //this changed
             }
             
-            string? input = Console.ReadLine(); //reads input from user
+            string input = Console.ReadLine() ?? ""; //reads input from user
             try 
             {
                 if (validateLength)
                 {
-                    if (input.Length > maxLength || input.Length < minLength)     //Exceptions --  for wrong length
+                    if (input.Length > maxLength || input.Length < minLength)  //wrong length exception
                     {
                         throw new IndexOutOfRangeException(
                             $"Input must be between {minLength} and {maxLength} alpha characters long.");
@@ -173,7 +188,7 @@
             System.Console.WriteLine();
             System.Console.WriteLine("Please select an option:");
 
-            string? input = Console.ReadLine(); //returns users input for selection
+            string input = Console.ReadLine() ?? ""; //returns users input for selection
             System.Console.WriteLine(); 
             System.Console.WriteLine("------------------------");
             System.Console.WriteLine();
@@ -210,11 +225,11 @@
             System.Console.WriteLine();
             System.Console.WriteLine("[1] Add a new ToDo task");
             System.Console.WriteLine("[2] View all ToDo tasks");  
-            System.Console.WriteLine("[3] Exit");
+            System.Console.WriteLine("[3] Logout");
             System.Console.WriteLine();
             System.Console.WriteLine("Please select an option:");
 
-            string? input = Console.ReadLine(); //returns users input for selection
+            string input = Console.ReadLine() ?? ""; //returns users input for selection
             System.Console.WriteLine();
             try
             {
@@ -236,24 +251,24 @@
     }
 
     //Method Display Add Todo Menu
-    static void DisplayAddTodoMenu(TodoService todoService, User activeUser)
+    static void DisplayAddTodoMenu(TodoController todoController, User activeUser)
     {
         System.Console.WriteLine("What task would you like add?");
-        string? input = Console.ReadLine();
+        string input = Console.ReadLine() ?? "";
         System.Console.WriteLine();
 
-        Todo todo = todoService.AddTodo(input, activeUser);
+        Todo todo = todoController.AddTodo(input, activeUser);
 
         System.Console.WriteLine($"ToDo Task '{input.ToUpper()}' was added to your list.");
         System.Console.WriteLine();
     }
 
     //Method Display All Todo's
-    static void DisplayAllTodosMenu(TodoService todoService, User activeUser)
+    static void DisplayAllTodosMenu(TodoController todoController, User activeUser)
     {
         System.Console.WriteLine("YOUR LIST OF TODO TASKS:");
         System.Console.WriteLine();
-        List<Todo> todos = todoService.GetAllTodos(activeUser);
+        List<Todo> todos = todoController.GetAllTodos(activeUser);
         foreach (Todo todo in todos)
         {
             System.Console.WriteLine(todo);
@@ -264,7 +279,7 @@
     }
 
     // Method to Display Register User Menu
-    static User DisplayRegisterUserMenu(UserService userService)
+    static User DisplayRegisterUserMenu(UserController userController)
     {
         System.Console.WriteLine("REGISTER:");
         System.Console.WriteLine();
@@ -284,12 +299,12 @@
             password = GetAndValidateUserInput("Password", 5, 10); 
         System.Console.WriteLine();
         //Method to create RegisterUser with first name, user name, and password - pulls from above
-        User user = userService.RegisterUser(firstName, userName, password);
+        User user = userController.RegisterUser(firstName, userName, password);
         return user;
     }
 
     // Method to Display Login Menu
-    static User DisplayLoginMenu(UserService userService)
+    static User DisplayLoginMenu(UserController userController)
     {
         System.Console.WriteLine("Welcome Back! ");
         System.Console.WriteLine();
@@ -299,7 +314,7 @@
         System.Console.WriteLine();
         string password = GetAndValidateUserInput("Password", null, null);
         System.Console.WriteLine();
-        User user = userService.Login(userName, password);
+        User user = userController.Login(userName, password);
         //System.Console.WriteLine();
         return user;
     }

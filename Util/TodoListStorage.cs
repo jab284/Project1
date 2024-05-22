@@ -1,5 +1,7 @@
 class TodoListStorage
 {
+    //Not being used anymore now due to using database
+
     public Dictionary<int, User> UserTable;
     public Dictionary<int, Todo> TodoTable;
     public int userIdCounter = 1;
