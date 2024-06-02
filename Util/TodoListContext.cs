@@ -11,7 +11,7 @@ class TodoListContext : DbContext
 
     public TodoListContext()
     {
-        ConfigurationString = File.ReadAllText("C:\\Users\\JAB_2\\Desktop\\JenAToDoListApp.txt"); // todo: get your file path and place it here
+        ConfigurationString = File.ReadAllText(@"C:\Revature\DBConnections\JenAToDoListApp.txt"); // todo: get your file path and place it here
     }
 
     protected override void OnConfiguring(DbContextOptionsBuilder options)
