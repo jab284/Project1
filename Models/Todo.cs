@@ -6,14 +6,14 @@ class Todo
     public User User { get; set; }
     public string Description { get; set; } = "";
     
-     //Constructor
+     //Constructor - setting the description and userId
     public Todo(string description, int userId)
     {
         this.UserId = userId;
         this.Description = description.ToUpper();  
     }
 
-    //ToString
+    //ToString - using ToString
     public override string ToString()
     {
         return $"ToDo: {Description}";  

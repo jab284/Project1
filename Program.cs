@@ -26,9 +26,9 @@ class Program
         System.Console.WriteLine("Here, you can easily maintain and track your list of need to do chores!");
         System.Console.WriteLine();
         System.Console.WriteLine("--------------------------");
-        //System.Console.WriteLine();
+       
 
-        User? user = null;  
+        User? user = null;  //track acive user - if noone logged in it is null
 
         bool exitRequested = false;
         while (!exitRequested) {
@@ -108,7 +108,7 @@ class Program
         }
     }
     
-    // Visualization UI Layer
+    // Presentation UI Layer
     static string GetAndValidateUserInput(string inputName, int? minLength, int? maxLength)
     {
         
@@ -127,7 +127,7 @@ class Program
             else
             {
                 System.Console.WriteLine(
-                    $"Please enter your {inputName}:");  //this changed
+                    $"Please enter your {inputName}:");  
             }
             
             string input = Console.ReadLine() ?? ""; //reads input from user
@@ -271,7 +271,7 @@ class Program
         List<Todo> todos = todoController.GetAllTodos(activeUser);
         foreach (Todo todo in todos)
         {
-            System.Console.WriteLine(todo);
+            System.Console.WriteLine(todo);  //ToString being called
         }
 
         System.Console.WriteLine();
@@ -314,7 +314,7 @@ class Program
         System.Console.WriteLine();
         string password = GetAndValidateUserInput("Password", null, null);
         System.Console.WriteLine();
-        User user = userController.Login(userName, password);
+        User user = userController.Login(userName, password); // service layer checking un and telling if wrong
         //System.Console.WriteLine();
         return user;
     }
